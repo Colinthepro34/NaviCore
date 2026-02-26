@@ -371,122 +371,127 @@ def show_route_popup(start_coords, end_coords, mode_choice):
 # 5. MAIN UI
 # ──────────────────────────────────────────────────────────────────────────────
 # --- HEADER ---
-
-st.markdown("""
-<nav class="ub-nav">
-  <div class="ub-logo">NaviCore</div>
-  <ul class="ub-nav-links">
-    <li><a href="#">Main</a></li>
-    <li><a href="#">Policy</a></li>
-    <li><a href="#">Business</a></li>
-    <li><a href="#">About</a></li>
-  </ul>
-  <div class="ub-nav-actions">
-    <button class="ub-btn-ghost">Log in</button>
-    <button class="ub-btn-solid">Sign up</button>
-  </div>
-</nav>
-""", unsafe_allow_html=True)
-
-col_left, col_right = st.columns([1, 1], gap="large")
-
-with col_left:
-    st.markdown("<br><br>", unsafe_allow_html=True)
-    st.title("Find the smartest route now")
-    
-    # Selecting points (landmark_labels is now guaranteed to exist)
-    s_name = st.selectbox("Start Point", options=landmark_labels)
-    e_name = st.selectbox("Destination", options=landmark_labels, index=min(10, len(landmark_labels)-1))
-    
-    mode_option = st.selectbox("Preferred Mode", options=["earliest_arrival", "public_transport", "train", "metro", "bus", "car"])
-
-    if st.button("Calculate Route", type="primary", use_container_width=True):
-        s_coords = landmark_map.get(s_name, (19.0760, 72.8777))
-        e_coords = landmark_map.get(e_name, (19.1972, 72.9780))
-        show_route_popup(s_coords, e_coords, mode_option)
-
-with col_right:
-    st.image("https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=552/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy80MmEyOTE0Ny1lMDQzLTQyZjktODU0NC1lY2ZmZmUwNTMyZTkucG5n")
-
-# ==========================================
-# PART 2: THE BLACK SECTION
-# ==========================================
-st.markdown("""
-<div class="black-section-container">
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
-        <div style="flex: 1; min-width: 300px;">
-            <div class="black-section-title">PAT.ai</div>
-            <div class="black-section-text">
-                PAT.ai (Perform • Analyze • Transform) is a smart data assistant that lets users upload a dataset and analyze it using simple natural language commands.
-            It automatically interprets prompts to perform statistical analysis, visualization, data cleaning, and predictions..
-            </div>
-            <a href="#" class="white-btn">Try it</a>
-        </div>
-        <div style="flex: 1; min-width: 300px; text-align: center;">
-            <img src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy9jNjQyNWRmNC0zMTkwLTRmZTEtODY2Ni02YTVhZjJjMGEwNDkucG5n"
-                 alt="NaviCore Pro"
-                 style="max-width: 100%; height: auto; border-radius: 12px;">
-        </div>
-    </div>
-</div>
-""", unsafe_allow_html=True)
-
-# ==========================================
-# PART 3: BOTTOM WHITE SECTION
-# ==========================================
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-col3, col4 = st.columns([1, 1], gap="large")
-
-with col3:
-    st.image(
-        "https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=311/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy9kNjQ4ZjViNi1iYjVmLTQ1MGUtODczMy05MGFlZmVjYmQwOWUuanBn"
-    )
-
-with col4:
-    st.title("How we works?")
+def main():
     st.markdown("""
-    NaviCore is a multimodal transit engine designed for Mumbai that solves the "last-mile" problem by merging road data with local train, metro, monorail, and BEST bus networks. Using a weighted Dijkstra algorithm, the system evaluates millions of combinations to find the most efficient path based on user preferences, such as "Earliest Arrival" to minimize time or "Least Interchange" to reduce transfers.
-The system applies a dynamic speed model—walking at 12 min/km, buses at 4 min/km, and cabs at 3 min/km—while incorporating fixed rail timetables and "snap" logic to ensure every route is realistic and navigable.
-    """)
+    <nav class="ub-nav">
+      <div class="ub-logo">NaviCore</div>
+      <ul class="ub-nav-links">
+        <li><a href="#">Main</a></li>
+        <li><a href="#">Policy</a></li>
+        <li><a href="#">Business</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+      <div class="ub-nav-actions">
+        <button class="ub-btn-ghost">Log in</button>
+        <button class="ub-btn-solid">Sign up</button>
+      </div>
+    </nav>
+    """, unsafe_allow_html=True)
 
-# Container for the landing features or the "How it works" section
-if 'compute_clicked' not in st.session_state or not st.session_state.compute_clicked:
-    # 1. Feature Cards (The 3 Algorithms)
-    st.subheader("Choose your routing strategy")
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown("""
-        <div class='feature-card'>
-          <div class='feature-icon'>⚡</div>
-          <div class='feature-title'>Earliest Arrival</div>
-          <p class='feature-desc'>Dijkstra across all modes — local train, metro,
-          monorail, bus, cab and walk — minimising total journey time.</p>
-        </div>""", unsafe_allow_html=True)
-    with c2:
-        st.markdown("""
-        <div class='feature-card'>
-          <div class='feature-icon'>🔄</div>
-          <div class='feature-title'>Least Interchange</div>
-          <p class='feature-desc'>Uses all modes but penalises every line or
-          mode change heavily, so you transfer as few times as possible.</p>
-        </div>""", unsafe_allow_html=True)
-    with c3:
-        st.markdown("""
-        <div class='feature-card'>
-          <div class='feature-icon'>🚏</div>
-          <div class='feature-title'>Public Transport Only</div>
-          <p class='feature-desc'>All transit systems, walk-only access — no cabs.
-          Forces the route to stay on trains, metro, monorail and buses.</p>
-        </div>""", unsafe_allow_html=True)
-    st.markdown("<br><br>", unsafe_allow_html=True)
-st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-# ==========================================
-# STICKY BOTTOM BAR
-# ==========================================
-st.markdown("""
-    <div class="sticky-bottom">
-        <button class="sticky-btn" onclick="window.scrollTo(0,0);">Calculate Route</button>
+    col_left, col_right = st.columns([1, 1], gap="large")
+
+    with col_left:
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        st.title("Find the smartest route now")
+
+        s_name = st.selectbox("Start Point", options=landmark_labels)
+        e_name = st.selectbox("Destination", options=landmark_labels, index=min(10, len(landmark_labels)-1))
+
+        mode_option = st.selectbox("Preferred Mode", options=["earliest_arrival", "public_transport", "train", "metro", "bus", "car"])
+
+        if st.button("Calculate Route", type="primary", use_container_width=True):
+            s_coords = landmark_map.get(s_name, (19.0760, 72.8777))
+            e_coords = landmark_map.get(e_name, (19.1972, 72.9780))
+            show_route_popup(s_coords, e_coords, mode_option)
+
+    with col_right:
+        st.image("https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=552/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy80MmEyOTE0Ny1lMDQzLTQyZjktODU0NC1lY2ZmZmUwNTMyZTkucG5n")
+
+    # ==========================================
+    # PART 2: THE BLACK SECTION
+    # ==========================================
+    st.markdown("""
+    <div class="black-section-container">
+        <div style="display: flex; flex-wrap: wrap; gap: 2rem; align-items: center;">
+            <div style="flex: 1; min-width: 300px;">
+                <div class="black-section-title">PAT.ai</div>
+                <div class="black-section-text">
+                    PAT.ai (Perform • Analyze • Transform) is a smart data assistant that lets users upload a dataset and analyze it using simple natural language commands.
+                    It automatically interprets prompts to perform statistical analysis, visualization, data cleaning, and predictions.
+                </div>
+                <a href="#" class="white-btn">Try it</a>
+            </div>
+            <div style="flex: 1; min-width: 300px; text-align: center;">
+                <img src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=368/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy9jNjQyNWRmNC0zMTkwLTRmZTEtODY2Ni02YTVhZjJjMGEwNDkucG5n"
+                     alt="NaviCore Pro"
+                     style="max-width: 100%; height: auto; border-radius: 12px;">
+            </div>
+        </div>
     </div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
+
+    # ==========================================
+    # PART 3: BOTTOM WHITE SECTION
+    # ==========================================
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    col3, col4 = st.columns([1, 1], gap="large")
+
+    with col3:
+        st.image(
+            "https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=311/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy9kNjQ4ZjViNi1iYjVmLTQ1MGUtODczMy05MGFlZmVjYmQwOWUuanBn"
+        )
+
+    with col4:
+        st.title("How we works?")
+        st.markdown("""
+        NaviCore is a multimodal transit engine designed for Mumbai that solves the "last-mile" problem by merging road data with local train, metro, monorail, and BEST bus networks. Using a weighted Dijkstra algorithm, the system evaluates millions of combinations to find the most efficient path based on user preferences, such as "Earliest Arrival" to minimize time or "Least Interchange" to reduce transfers.
+        The system applies a dynamic speed model—walking at 12 min/km, buses at 4 min/km, and cabs at 3 min/km—while incorporating fixed rail timetables and "snap" logic to ensure every route is realistic and navigable.
+        """)
+
+    # ==========================================
+    # FEATURE CARDS SECTION
+    # ==========================================
+    if 'compute_clicked' not in st.session_state or not st.session_state.compute_clicked:
+        st.subheader("Choose your routing strategy")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.markdown("""
+            <div class='feature-card'>
+              <div class='feature-icon'>⚡</div>
+              <div class='feature-title'>Earliest Arrival</div>
+              <p class='feature-desc'>Dijkstra across all modes — local train, metro,
+              monorail, bus, cab and walk — minimising total journey time.</p>
+            </div>""", unsafe_allow_html=True)
+        with c2:
+            st.markdown("""
+            <div class='feature-card'>
+              <div class='feature-icon'>🔄</div>
+              <div class='feature-title'>Least Interchange</div>
+              <p class='feature-desc'>Uses all modes but penalises every line or
+              mode change heavily, so you transfer as few times as possible.</p>
+            </div>""", unsafe_allow_html=True)
+        with c3:
+            st.markdown("""
+            <div class='feature-card'>
+              <div class='feature-icon'>🚏</div>
+              <div class='feature-title'>Public Transport Only</div>
+              <p class='feature-desc'>All transit systems, walk-only access — no cabs.
+              Forces the route to stay on trains, metro, monorail and buses.</p>
+            </div>""", unsafe_allow_html=True)
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
+    st.markdown("<br><br><br><br>", unsafe_allow_html=True)
+
+    # ==========================================
+    # STICKY BOTTOM BAR
+    # ==========================================
+    st.markdown("""
+        <div class="sticky-bottom">
+            <button class="sticky-btn" onclick="window.scrollTo(0,0);">Calculate Route</button>
+        </div>
+    """, unsafe_allow_html=True)
+
+
+if __name__ == "__main__":
+    main()
