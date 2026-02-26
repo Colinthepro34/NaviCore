@@ -1,4 +1,0 @@
-libgeos-dev
-libproj-dev
-binutils
-gdal-bin
