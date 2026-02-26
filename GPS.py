@@ -106,7 +106,7 @@ class MumbaiData:
 
     def __init__(self):
         print("Loading road graph …")
-        self.G_road = ox.load_graphml(_data_path("mumbai_graph.graphml"))
+        self.G_road = ox.load_graphml(_data_path("mumbai_graph.graphml.gz"))
 
         print("Loading train data …")
         self._load_trains()
