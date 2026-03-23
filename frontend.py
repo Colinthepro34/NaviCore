@@ -597,7 +597,7 @@ def main():
         )
 
     # ── PAT.ai black section ─────────────────────────────────────────────────
-st.markdown("""
+    st.markdown("""
     <div class="black-section-container">
         <div style="display:flex;flex-wrap:wrap;gap:2rem;align-items:center;">
             <div style="flex:1;min-width:300px;">
@@ -617,7 +617,6 @@ st.markdown("""
         </div>
     </div>
     """, unsafe_allow_html=True)
-
     # ── How it works ─────────────────────────────────────────────────────────
     st.markdown("<br>", unsafe_allow_html=True)
     col3, col4 = st.columns([1, 1], gap="large")
